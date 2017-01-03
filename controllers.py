@@ -34,32 +34,23 @@ class Device(object):
         self.device_id = device_id
         self.hid, self.wid = extract_ids(device_id)
 
-    def addButtonEvent(self, callback, id):
+    def addEvent(self, event_type, id, callback):
         event = event_handler.Event(
-            event_type=event_handler.InputType.JoystickButton,
+            event_type=event_type,
             hardware_id=self.hid,
             windows_id=self.wid,
             identifier=id
         )
         callback_registry.add(callback, event, self.mode, False)
+
+    def addButtonEvent(self, callback, id):
+        self.addEvent(event_handler.InputType.JoystickButton, id, callback)
 
     def addAxisEvent(self, callback, id):
-        event = event_handler.Event(
-            event_type=event_handler.InputType.JoystickAxis,
-            hardware_id=self.hid,
-            windows_id=self.wid,
-            identifier=id
-        )
-        callback_registry.add(callback, event, self.mode, False)
+        self.addEvent(event_handler.InputType.JoystickAxis, id, callback)
 
     def addHatEvent(self, callback, id):
-        event = event_handler.Event(
-            event_type=event_handler.InputType.JoystickHat,
-            hardware_id=self.hid,
-            windows_id=self.wid,
-            identifier=id
-        )
-        callback_registry.add(callback, event, self.mode, False)
+        self.addEvent(event_handler.InputType.JoystickHat, id, callback)
 
 
 @SingletonDecorator
