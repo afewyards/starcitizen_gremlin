@@ -23,8 +23,7 @@
 
 from gremlin import event_handler
 from gremlin.input_devices import callback_registry
-from gremlin.util import extract_ids
-from gremlin.util import SingletonDecorator
+from gremlin.util import extract_ids, SingletonDecorator
 
 
 class Device(object):

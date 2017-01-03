@@ -28,16 +28,9 @@ from controllers import controllers
 class GeneralSystem:
 
     def __init__(self):
-        controllers.throttle.addButtonEvent(self.abandon_ship_left, 31)
-        controllers.throttle.addButtonEvent(self.abandon_ship_right, 32)
+        controllers.throttle.addButtonEvent(self.abandon_ship, 31)
+        controllers.throttle.addButtonEvent(self.abandon_ship, 32)
 
     def abandon_ship(self, event, joy):
         if event.is_pressed & joy[controllers.throttle.name].button(20).is_pressed & joy[controllers.throttle.name].button(31).is_pressed & joy[controllers.throttle.name].button(32).is_pressed:
-            Macro.self_destruct.run()
-            Macro.eject.run()
-
-    def abandon_ship_left(self, event, joy):
-        self.abandon_ship(event, joy)
-
-    def abandon_ship_right(self, event, joy):
-        self.abandon_ship(event, joy)
+            Macro.abandon_ship.run()

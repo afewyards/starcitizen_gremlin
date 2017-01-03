@@ -53,8 +53,8 @@ class FlightSystem:
         controllers.throttle.addButtonEvent(self.quantum_control, 27)
         controllers.throttle.addButtonEvent(self.landing_control, 28)
         controllers.throttle.addButtonEvent(self.engage, 26)
-        controllers.throttle.addButtonEvent(self.set_flapsu, 22)
-        controllers.throttle.addButtonEvent(self.set_flapsd, 23)
+        controllers.throttle.addButtonEvent(self.set_flaps, 22)
+        controllers.throttle.addButtonEvent(self.set_flaps, 23)
         controllers.throttle.addButtonEvent(self.toggle_comstab, 11)
         controllers.throttle.addButtonEvent(self.toggle_gforce, 12)
 
@@ -128,6 +128,7 @@ class FlightSystem:
                 self._afterburner = False
         vjoy[1].axis(AxisName.Z).value = ((total_value - pos) - max_value) / float(32768)
 
+
     def set_flaps(self, event, vjoy, joy):
         self.throttle_control(event, vjoy, joy)
         if joy[throttle_name].button(22).is_pressed:
@@ -135,25 +136,16 @@ class FlightSystem:
             self._active_thruster_curve = Curve.thruster_curve_u
             self._active_throttle_curve = Curve.thruster_curve
             self._active_rudder_curve = Curve.thruster_curve_u
-            return 0
         elif joy[throttle_name].button(23).is_pressed:
             self._active_pitch_yaw_curve = Curve.pitch_yaw_curve_d
             self._active_thruster_curve = Curve.thruster_curve
             self._active_throttle_curve = Curve.thruster_curve
-            self._active_rudder_curve = Curve.thruster_curve
-            return 0
+            self._active_rudder_curve = Curve.thruster_curve_d
         else:
             self._active_pitch_yaw_curve = Curve.pitch_yaw_curve
             self._active_thruster_curve = Curve.pitch_yaw_curve
             self._active_throttle_curve = Curve.thruster_curve
-            self._active_rudder_curve = Curve.thruster_curve_d
-            return 0
-
-    def set_flapsu(self, event, vjoy, joy):
-        self.set_flaps(event, vjoy, joy)
-
-    def set_flapsd(self, event, vjoy, joy):
-        self.set_flaps(event, vjoy, joy)
+            self._active_rudder_curve = Curve.thruster_curve
 
     def toggle_comstab(self, event):
         if event.is_pressed:
