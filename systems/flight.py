@@ -98,27 +98,23 @@ class FlightSystem:
         elif joy[throttle_name].button(28).is_pressed:
             util.short_long_press(event, Macro.flight_engage, Macro.flight_autoland)
 
-    # TODO: remove the convert of float
     def throttle_control(self, event, vjoy, joy):
-        max_value = 32768
         divider = 3
-        total_value = max_value * 2
-        part = total_value / divider
-
-        pos = joy[throttle_name].axis(4).value * float(32768)
-        pos = abs((pos + max_value) - total_value)
+        max_value = 2
+        part = max_value / divider
+        pos = joy[throttle_name].axis(4).value + 1
 
         if joy[throttle_name].button(22).is_pressed:
             if (pos > (part * (divider - 1)) + part / (7 - divider)):
                 pos = pos - (part * (divider - 1))
-                ratio = pos / part
-                pos = abs(ratio * total_value)
+                pos = (pos / part) * max_value
+
                 if self._afterburner == False:
                     Macro.flight_afterburner.run()
                     self._afterburner = True
             else:
-                ratio = pos / (part * (divider - 1))
-                pos = abs(ratio * total_value)
+                pos = (pos / part * (divider - 1)) * max_value
+
                 if self._afterburner:
                     Macro.flight_afterburner_release.run()
                     self._afterburner = False
@@ -126,8 +122,8 @@ class FlightSystem:
             if self._afterburner:
                 Macro.flight_afterburner_release.run()
                 self._afterburner = False
-        vjoy[1].axis(AxisName.Z).value = ((total_value - pos) - max_value) / float(32768)
 
+        vjoy[1].axis(AxisName.Z).value = pos - 1
 
     def set_flaps(self, event, vjoy, joy):
         self.throttle_control(event, vjoy, joy)
