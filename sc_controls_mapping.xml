@@ -1,0 +1,53 @@
+<ActionMaps version="1" optionsVersion="2" rebindVersion="2" profileName="gremlin">
+ <CustomisationUIHeader label="gremlin" description="" image="">
+  <devices>
+   <keyboard instance="1"/>
+   <mouse instance="1"/>
+   <joystick instance="1"/>
+   <joystick instance="2"/>
+   <joystick instance="3"/>
+   <joystick instance="4"/>
+  </devices>
+  <categories>
+   <category label="@ui_CCSpaceFlight"/>
+  </categories>
+ </CustomisationUIHeader>
+ <options type="keyboard" instance="1"/>
+ <options type="joystick" instance="1"/>
+ <options type="joystick" instance="2"/>
+ <options type="joystick" instance="3"/>
+ <options type="joystick" instance="4">
+  <flight_throttle_abs invert="0"/>
+ </options>
+ <modifiers />
+ <actionmap name="spaceship_movement">
+  <action name="v_throttle_abs">
+   <rebind input="js1_z"/>
+  </action>
+  <action name="v_strafe_vertical">
+   <rebind input="js1_roty"/>
+  </action>
+  <action name="v_strafe_lateral">
+   <rebind input="js1_rotx"/>
+  </action>
+  <action name="v_ifcs_toggle_comstab">
+   <rebind input="kb1_lalt+j"/>
+  </action>
+  <action name="v_ifcs_toggle_gforce_safety">
+   <rebind input="kb1_lalt+k"/>
+  </action>
+  <action name="v_ifcs_toggle_vector_decoupling">
+   <rebind input="js1_ "/>
+  </action>
+ </actionmap>
+ <actionmap name="spaceship_targeting">
+  <action name="v_target_missile_lock_focused">
+   <rebind input="js3_button5"/>
+  </action>
+ </actionmap>
+ <actionmap name="spaceship_missiles">
+  <action name="v_weapon_launch_missile">
+   <rebind input="js3_button2"/>
+  </action>
+ </actionmap>
+</ActionMaps>

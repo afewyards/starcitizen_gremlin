@@ -22,7 +22,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-from config import Macro
+from config import Macro, ButtonMapping
 from utils import Utils
 from controllers import controllers
 
@@ -32,10 +32,10 @@ util = Utils()
 class TargetSystem:
 
     def __init__(self):
-        controllers.joystick.addButtonEvent(self.nearest_target, 9)
-        controllers.joystick.addButtonEvent(self.reticle_target, 7)
-        controllers.joystick.addButtonEvent(self.target_cycle_hostile, 8)
-        controllers.joystick.addButtonEvent(self.target_cycle_pinned, 10)
+        controllers.joystick.addButtonEvent(self.nearest_target, ButtonMapping.joystick_target_nearest)
+        controllers.joystick.addButtonEvent(self.reticle_target, ButtonMapping.joystick_target_reticle)
+        controllers.joystick.addButtonEvent(self.target_cycle_hostile, ButtonMapping.joystick_target_cycle_hostile)
+        controllers.joystick.addButtonEvent(self.target_cycle_pinned, ButtonMapping.joystick_target_cycle_pinned)
         controllers.joystick.addButtonEvent(self.target_cycle_all, 11)
         controllers.joystick.addButtonEvent(self.target_cycle_friendly, 13)
 

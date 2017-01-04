@@ -23,7 +23,7 @@
 
 
 import enum
-from config import Macro
+from config import Macro, ButtonMapping
 from controllers import controllers
 
 
@@ -37,11 +37,11 @@ class HudSystem:
 
     def __init__(self):
         self._hud_headlook_lock = HudMode.VIEW_MODE_CLEAR
-        controllers.joystick.addButtonEvent(self.mode_press, 19)
-        controllers.joystick.addButtonEvent(self.mode_top, 15)
-        controllers.joystick.addButtonEvent(self.mode_left, 18)
-        controllers.joystick.addButtonEvent(self.mode_right, 16)
-        controllers.joystick.addButtonEvent(self.mode_down, 17)
+        controllers.joystick.addButtonEvent(self.mode_top, ButtonMapping.joystick_hud_up)
+        controllers.joystick.addButtonEvent(self.mode_right, ButtonMapping.joystick_hud_right)
+        controllers.joystick.addButtonEvent(self.mode_down, ButtonMapping.joystick_hud_down)
+        controllers.joystick.addButtonEvent(self.mode_left, ButtonMapping.joystick_hud_left)
+        controllers.joystick.addButtonEvent(self.mode_press, ButtonMapping.joystick_hud_press)
 
     def switch_headmode(self, joy):
         if joy[controllers.throttle.name].button(28).is_pressed & self._hud_headlook_lock == HudMode.VIEW_MODE_CLEAR:

@@ -21,7 +21,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-from config import Macro, Curve
+from config import Macro, Curve, AxisMapping, ButtonMapping
 from utils import Utils
 from controllers import controllers
 from vjoy.vjoy import AxisName
@@ -37,26 +37,27 @@ class FlightSystem:
         self._mode = 0
         self._afterburner = False
         self._active_pitch_yaw_curve = Curve.pitch_yaw_curve
-        self._active_thruster_curve = Curve.pitch_yaw_curve
-        self._active_throttle_curve = Curve.pitch_yaw_curve
+        self._active_thruster_curve = Curve.thruster_curve
         self._active_rudder_curve = Curve.pitch_yaw_curve
+
         self.addListeners()
 
     def addListeners(self):
-        controllers.joystick.addAxisEvent(self.yaw, 1)
-        controllers.joystick.addAxisEvent(self.pitch, 2)
-        controllers.rudder.addAxisEvent(self.roll, 4)
-        controllers.throttle.addAxisEvent(self.thrusters_vertical, 1)
-        controllers.throttle.addAxisEvent(self.thrusters_horizontal, 2)
-        controllers.throttle.addAxisEvent(self.throttle_control, 4)
+        controllers.joystick.addAxisEvent(self.yaw, AxisMapping.joystick_x)
+        controllers.joystick.addAxisEvent(self.pitch, AxisMapping.joystick_y)
+        controllers.rudder.addAxisEvent(self.roll, AxisMapping.rudder_roll)
+        controllers.throttle.addAxisEvent(self.thrusters_vertical, AxisMapping.throttle_vertical)
+        controllers.throttle.addAxisEvent(self.thrusters_horizontal, AxisMapping.throttle_horizontal)
+        controllers.throttle.addAxisEvent(self.throttle_control, AxisMapping.throttle)
 
-        controllers.throttle.addButtonEvent(self.quantum_control, 27)
-        controllers.throttle.addButtonEvent(self.landing_control, 28)
-        controllers.throttle.addButtonEvent(self.engage, 26)
-        controllers.throttle.addButtonEvent(self.set_flaps, 22)
-        controllers.throttle.addButtonEvent(self.set_flaps, 23)
-        controllers.throttle.addButtonEvent(self.toggle_comstab, 11)
-        controllers.throttle.addButtonEvent(self.toggle_gforce, 12)
+        controllers.throttle.addButtonEvent(self.boost, ButtonMapping.throttle_boost)
+        controllers.throttle.addButtonEvent(self.quantum_control, ButtonMapping.throttle_quantum_control)
+        controllers.throttle.addButtonEvent(self.landing_control, ButtonMapping.throttle_landing_control)
+        controllers.throttle.addButtonEvent(self.engage, ButtonMapping.throttle_engage)
+        controllers.throttle.addButtonEvent(self.set_flaps, ButtonMapping.throttle_flapsu)
+        controllers.throttle.addButtonEvent(self.set_flaps, ButtonMapping.throttle_flapsd)
+        controllers.throttle.addButtonEvent(self.toggle_comstab, ButtonMapping.throttle_comstab)
+        controllers.throttle.addButtonEvent(self.toggle_gforce, ButtonMapping.throttle_gforce)
 
     def yaw(self, event, vjoy):
         vjoy[1].axis(AxisName.X).value = self._active_pitch_yaw_curve(event.value)
@@ -72,6 +73,12 @@ class FlightSystem:
 
     def thrusters_horizontal(self, event, vjoy):
         vjoy[1].axis(AxisName.RY).value = self._active_thruster_curve(event.value)
+
+    def boost(self, event):
+        if event.is_pressed:
+            Macro.flight_boost.run()
+        else:
+            Macro.flight_boost_release.run()
 
     def quantum_control(self, event):
         if event.is_pressed:
@@ -102,7 +109,7 @@ class FlightSystem:
         divider = 3
         max_value = 2
         part = max_value / divider
-        pos = joy[throttle_name].axis(4).value + 1
+        pos = max_value - (joy[throttle_name].axis(4).value + 1)
 
         if joy[throttle_name].button(22).is_pressed:
             if (pos > (part * (divider - 1)) + part / (7 - divider)):
@@ -113,7 +120,7 @@ class FlightSystem:
                     Macro.flight_afterburner.run()
                     self._afterburner = True
             else:
-                pos = (pos / part * (divider - 1)) * max_value
+                pos = (pos / (part * (divider - 1))) * max_value
 
                 if self._afterburner:
                     Macro.flight_afterburner_release.run()
@@ -123,25 +130,20 @@ class FlightSystem:
                 Macro.flight_afterburner_release.run()
                 self._afterburner = False
 
-        vjoy[1].axis(AxisName.Z).value = pos - 1
+        # invert the axis as sc does that by default
+        vjoy[1].axis(AxisName.Z).value = max_value - pos - 1
 
     def set_flaps(self, event, vjoy, joy):
         self.throttle_control(event, vjoy, joy)
         if joy[throttle_name].button(22).is_pressed:
             self._active_pitch_yaw_curve = Curve.pitch_yaw_curve
             self._active_thruster_curve = Curve.thruster_curve_u
-            self._active_throttle_curve = Curve.thruster_curve
-            self._active_rudder_curve = Curve.thruster_curve_u
         elif joy[throttle_name].button(23).is_pressed:
             self._active_pitch_yaw_curve = Curve.pitch_yaw_curve_d
-            self._active_thruster_curve = Curve.thruster_curve
-            self._active_throttle_curve = Curve.thruster_curve
-            self._active_rudder_curve = Curve.thruster_curve_d
+            self._active_thruster_curve = Curve.thruster_curve_d
         else:
             self._active_pitch_yaw_curve = Curve.pitch_yaw_curve
             self._active_thruster_curve = Curve.pitch_yaw_curve
-            self._active_throttle_curve = Curve.thruster_curve
-            self._active_rudder_curve = Curve.thruster_curve
 
     def toggle_comstab(self, event):
         if event.is_pressed:

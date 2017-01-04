@@ -24,6 +24,7 @@
 from gremlin import event_handler
 from gremlin.input_devices import callback_registry
 from gremlin.util import extract_ids, SingletonDecorator
+from config import DeviceConfig
 
 
 class Device(object):
@@ -57,21 +58,22 @@ class Device(object):
 class Controllers:
 
     def __init__(self):
-        self.rudder = Device(
-            name="VKBsim Black Box",
-            device_id=589103391,
-            mode="Default"
-        )
 
         self.joystick = Device(
-            name="Joystick - HOTAS Warthog",
-            device_id=72287234,
+            name=DeviceConfig.joystick_name,
+            device_id=DeviceConfig.joystick_id,
             mode="Default"
         )
 
         self.throttle = Device(
-            name="Throttle - HOTAS Warthog",
-            device_id=72287236,
+            name=DeviceConfig.throttle_name,
+            device_id=DeviceConfig.throttle_id,
+            mode="Default"
+        )
+
+        self.rudder = Device(
+            name=DeviceConfig.rudder_name,
+            device_id=DeviceConfig.rudder_id,
             mode="Default"
         )
 

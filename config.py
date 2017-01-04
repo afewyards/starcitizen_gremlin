@@ -21,7 +21,6 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import enum
 from gremlin.spline import CubicBezierSpline
 from gremlin.input_devices import macro
 
@@ -29,43 +28,93 @@ hold_time = 0.4
 hold_long_time = 0.9
 
 
+class DeviceConfig(object):
+
+    joystick_name = 'Joystick - HOTAS Warthog'
+    joystick_id = 72287234
+
+    throttle_name = 'Throttle - HOTAS Warthog'
+    throttle_id = 72287236
+
+    rudder_name = 'VKBsim Black Box'
+    rudder_id = 589103391
+
+
 class Curve(object):
     pitch_yaw_curve = CubicBezierSpline([
         (-1.0, -1.0),
-        (-1.0, -0.0),
-        (1.0,  -0.0),
+        (-1.0, 0.2),
+        (1.0,  -0.2),
         (1.0,  1.0)
     ])
     pitch_yaw_curve_d = CubicBezierSpline([
-        (-1.0, -1.0),
-        (-1.0, -0.6),
-        (1.0,  0.6),
-        (1.0,  1.0)
+        (-1.0, -0.61),
+        (-1.0, 0.15),
+        (1.0,  -0.15),
+        (1.0,  0.61)
     ])
     thruster_curve_u = CubicBezierSpline([
         (-1.0, -1.0),
-        (-1.0, -0.3),
-        (1.0,  0.3),
+        (-1.0, 0.5),
+        (1.0,  -0.5),
         (1.0,  1.0)
     ])
     thruster_curve = CubicBezierSpline([
-        (-1.0, -0.7),
-        (-1.0, -0.185),
-        (1.0,  0.185),
-        (1.0,  0.7)
+        (-1.0, -0.65),
+        (-1.0, 0.265),
+        (1.0,  -0.265),
+        (1.0,  0.65)
     ])
     thruster_curve_d = CubicBezierSpline([
-        (-1.0, -0.5),
-        (-1.0, -0.3),
-        (1.0,  0.3),
-        (1.0,  0.5)
+        (-1.0, -0.6),
+        (-1.0, 0.4),
+        (1.0,  -0.4),
+        (1.0,  0.6)
     ])
 
 
-class Button(enum.Enum):
+class AxisMapping(object):
+    joystick_x = 1
+    joystick_y = 2
+    rudder_roll = 4
+    throttle = 4
+    throttle_vertical = 1
+    throttle_horizontal = 2
+
+
+class ButtonMapping(object):
+    joystick_fire_group_1 = 1
+    joystick_fire_group_2 = 6
+    joystick_fire_group_3 = 5
+    joystick_fire_missiles = 2
+    joystick_fire_counter_measures = 3
+    joystick_cycle_counter_measures = 4
+
+    joystick_target_reticle = 7
+    joystick_target_cycle_hostile = 8
+    joystick_target_nearest = 9
+    joystick_target_cycle_pinned = 10
+
+    joystick_hud_up = 15
+    joystick_hud_right = 16
+    joystick_hud_down = 17
+    joystick_hud_left = 18
+    joystick_hud_press = 19
+
+    throttle_boost = 2
+    throttle_quantum_control = 27
+    throttle_landing_control = 28
+    throttle_engage = 26
+    throttle_flapsu = 22
+    throttle_flapsd = 23
+    throttle_comstab = 11
+    throttle_gforce = 12
+
     throttle_rdr_altm = 25
     throttle_eac = 24
 
+
+# Do not edit below this line
 
 class Macro(object):
     shield_raise_front = macro.Macro()
@@ -179,7 +228,9 @@ class Macro(object):
     flight_match_target_speed = macro.Macro()
     flight_match_target_speed.tap(macro.Keys.M)
     flight_boost = macro.Macro()
-    flight_boost.tap(macro.Keys.X)
+    flight_boost.press(macro.Keys.X)
+    flight_boost_release = macro.Macro()
+    flight_boost_release.release(macro.Keys.X)
     flight_afterburner = macro.Macro()
     flight_afterburner.press(macro.Keys.LShift)
     flight_afterburner_release = macro.Macro()
