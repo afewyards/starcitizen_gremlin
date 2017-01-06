@@ -66,6 +66,10 @@
         <action name="v_ifcs_toggle_gforce_safety">
             <rebind input="kb1_lalt+k"/>
         </action>
+        <action name="v_autoland">
+            <rebind input="js1_ "/>
+            <rebind input="js2_ "/>
+        </action>
     </actionmap>
     <actionmap name="spaceship_targeting">
         <action name="v_target_missile_lock_focused">
@@ -78,6 +82,14 @@
         </action>
         <action name="v_weapon_cycle_missile_fwd">
             <rebind input="js1_button6"/>
+        </action>
+    </actionmap>
+    <actionmap name="spaceship_defensive">
+        <action name="v_weapon_launch_countermeasure">
+            <rebind input="js1_ "/>
+        </action>
+        <action name="v_weapon_cycle_countermeasure_fwd">
+            <rebind input="js1_ "/>
         </action>
     </actionmap>
 </ActionMaps>
