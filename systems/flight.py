@@ -102,7 +102,7 @@ class FlightSystem:
         divider = 3
         max_value = 2
         part = max_value / divider
-        pos = max_value - (joy[throttle_name].axis(4).value + 1)
+        pos = max_value - (joy[throttle_name].axis(AxisMapping.throttle).value + 1)
 
         if joy[throttle_name].button(ButtonMapping.throttle_flapsu).is_pressed and self._landing_mode is False:
             if (pos > (part * (divider - 1)) + part / (7 - divider)):
