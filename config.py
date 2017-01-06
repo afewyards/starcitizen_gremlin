@@ -126,6 +126,7 @@ class ButtonMapping(object):
     throttle_flapsd = 23
     throttle_comstab = 11
     throttle_gforce = 12
+    throttle_gimbal_lock = 21
 
     throttle_decoupled_fwd = 9
     throttle_decoupled_bck = 10
@@ -210,6 +211,10 @@ class Macro(object):
     systems_gforce_toggle.press(macro.Keys.LAlt)
     systems_gforce_toggle.tap(macro.Keys.K)
     systems_gforce_toggle.release(macro.Keys.LAlt)
+    systems_gimbal_lock_toggle = macro.Macro()
+    systems_gimbal_lock_toggle.press(macro.Keys.RAlt)
+    systems_gimbal_lock_toggle.tap(macro.Keys.J)
+    systems_gimbal_lock_toggle.release(macro.Keys.RAlt)
 
     lights = macro.Macro()
     lights.press(macro.Keys.LAlt)
