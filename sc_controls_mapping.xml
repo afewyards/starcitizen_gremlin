@@ -13,24 +13,36 @@
         </categories>
     </CustomisationUIHeader>
     <options type="keyboard" instance="1"/>
-    <options type="joystick" instance="1"/>
-    <options type="joystick" instance="2"/>
-    <options type="joystick" instance="3"/>
-    <options type="joystick" instance="4">
+    <options type="joystick" instance="1">
         <flight_throttle_abs invert="0"/>
     </options>
+    <options type="joystick" instance="2"/>
+    <options type="joystick" instance="3"/>
+    <options type="joystick" instance="4"/>
     <modifiers/>
     <actionmap name="spaceship_movement">
         <action name="v_throttle_abs">
             <rebind input="js1_z"/>
         </action>
+        <action name="v_decoupled_strafe_forward">
+            <rebind input="js1_z"/>
+        </action>
         <action name="v_strafe_vertical">
+            <rebind input="js1_roty"/>
+        </action>
+        <action name="v_decoupled_strafe_vertical">
             <rebind input="js1_roty"/>
         </action>
         <action name="v_strafe_lateral">
             <rebind input="js1_rotx"/>
         </action>
+        <action name="v_decoupled_strafe_lateral">
+            <rebind input="js1_rotx"/>
+        </action>
         <action name="v_brake">
+            <rebind input="js1_button7"/>
+        </action>
+        <action name="v_decoupled_brake">
             <rebind input="js1_button7"/>
         </action>
         <action name="v_boost">
@@ -42,7 +54,7 @@
         <action name="v_toggle_landing_system">
             <rebind input="js1_button10" activationMode="hold"/>
         </action>
-        <action name="v_toggle_qdrive_engagement">
+        <action name="v_toggle_qdrive_system">
             <rebind input="js1_button11" activationMode="hold"/>
         </action>
         <action name="v_ifcs_toggle_vector_decoupling">

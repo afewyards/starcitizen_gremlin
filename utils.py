@@ -24,6 +24,7 @@
 
 from threading import Timer
 from gremlin.input_devices import macro
+import gremlin
 
 long_press_delay = 0.3 # in seconds
 
@@ -36,7 +37,7 @@ class Utils:
     def get_id(self, event):
         return str(event.hardware_id) + "_" + str(event.identifier)
 
-    def run_macro_or_button_tap(macro_or_button):
+    def run_macro_or_button_tap(self, macro_or_button):
         if isinstance(macro_or_button, macro.Macro):
             macro_or_button.run()
         else:

@@ -123,8 +123,7 @@ class FlightSystem:
                 vjoy[1].button(BindedNames.afterburner).is_pressed = False
                 self._afterburner = False
 
-        # invert the axis as sc does that by default
-        vjoy[1].axis(AxisName.Z).value = max_value - pos - 1
+        vjoy[1].axis(AxisName.Z).value = pos - 1
 
     def set_flaps(self, event, vjoy, joy):
         self.throttle_control(event, vjoy, joy)
