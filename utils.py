@@ -37,7 +37,7 @@ class Utils:
         return str(event.hardware_id) + "_" + str(event.identifier)
 
     def run_macro_or_button_tap(macro_or_button):
-        if type(macro_or_button) == macro.Macro:
+        if isinstance(macro_or_button, macro.Macro):
             macro_or_button.run()
         else:
             macro_or_button.is_pressed = True
