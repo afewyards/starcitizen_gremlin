@@ -22,7 +22,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-from config import ButtonMapping, Macro
+from config import ButtonMapping, BindedNames, Macro
 from controllers import controllers
 
 
@@ -38,21 +38,21 @@ class WeaponSystem:
 
     def fire_primary_active_group(self, event, vjoy, joy):
         if joy[controllers.throttle.name].button(ButtonMapping.throttle_rdr_altm).is_pressed:
-            vjoy[1].button(1).is_pressed = event.is_pressed
+            vjoy[1].button(BindedNames.fire_group_1).is_pressed = event.is_pressed
         else:
-            vjoy[1].button(2).is_pressed = event.is_pressed
+            vjoy[1].button(BindedNames.fire_group_2).is_pressed = event.is_pressed
 
     def fire_secondary_active_group(self, event, vjoy, joy):
         if joy[controllers.throttle.name].button(ButtonMapping.throttle_rdr_altm).is_pressed:
-            vjoy[1].button(2).is_pressed = event.is_pressed
+            vjoy[1].button(BindedNames.fire_group_2).is_pressed = event.is_pressed
         else:
-            vjoy[1].button(1).is_pressed = event.is_pressed
+            vjoy[1].button(BindedNames.fire_group_1).is_pressed = event.is_pressed
 
     def fire_third_active_group(self, event, vjoy):
-        vjoy[1].button(3).is_pressed = event.is_pressed
+        vjoy[1].button(BindedNames.fire_group_3).is_pressed = event.is_pressed
 
     def fire_missiles(self, event, vjoy):
-        vjoy[1].button(4).is_pressed = event.is_pressed
+        vjoy[1].button(BindedNames.fire_missiles).is_pressed = event.is_pressed
 
     def fire_counter_measures(self, event):
         if event.is_pressed:

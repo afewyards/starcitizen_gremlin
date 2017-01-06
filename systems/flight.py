@@ -21,7 +21,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-from config import Macro, Curve, AxisMapping, ButtonMapping
+from config import Macro, Curve, AxisMapping, ButtonMapping, BindedNames
 from utils import Utils
 from controllers import controllers
 from vjoy.vjoy import AxisName
@@ -34,7 +34,6 @@ util = Utils()
 class FlightSystem:
 
     def __init__(self):
-        self._mode = 0
         self._afterburner = False
         self._active_pitch_yaw_curve = Curve.pitch_yaw_curve
         self._active_thruster_curve = Curve.thruster_curve
@@ -50,6 +49,7 @@ class FlightSystem:
         controllers.throttle.addAxisEvent(self.thrusters_horizontal, AxisMapping.throttle_horizontal)
         controllers.throttle.addAxisEvent(self.throttle_control, AxisMapping.throttle)
 
+        controllers.throttle.addButtonEvent(self.brake, ButtonMapping.throttle_brake)
         controllers.throttle.addButtonEvent(self.boost, ButtonMapping.throttle_boost)
         controllers.throttle.addButtonEvent(self.quantum_control, ButtonMapping.throttle_quantum_control)
         controllers.throttle.addButtonEvent(self.landing_control, ButtonMapping.throttle_landing_control)
@@ -58,6 +58,8 @@ class FlightSystem:
         controllers.throttle.addButtonEvent(self.set_flaps, ButtonMapping.throttle_flapsd)
         controllers.throttle.addButtonEvent(self.toggle_comstab, ButtonMapping.throttle_comstab)
         controllers.throttle.addButtonEvent(self.toggle_gforce, ButtonMapping.throttle_gforce)
+        controllers.throttle.addButtonEvent(self.toggle_decoupled, ButtonMapping.throttle_decoupled_fwd)
+        controllers.throttle.addButtonEvent(self.toggle_decoupled, ButtonMapping.throttle_decoupled_bck)
 
     def yaw(self, event, vjoy):
         vjoy[1].axis(AxisName.X).value = self._active_pitch_yaw_curve(event.value)
@@ -74,6 +76,9 @@ class FlightSystem:
     def thrusters_horizontal(self, event, vjoy):
         vjoy[1].axis(AxisName.RY).value = self._active_thruster_curve(event.value)
 
+    def brake(self, event, vjoy):
+        vjoy[1].button(BindedNames.brake).is_pressed = event.is_pressed
+
     def boost(self, event):
         if event.is_pressed:
             Macro.flight_boost.run()
@@ -81,29 +86,17 @@ class FlightSystem:
             Macro.flight_boost_release.run()
 
     def quantum_control(self, event):
-        if event.is_pressed:
-            self._mode = 1
-        else:
-            if self._mode == 0:
-                return
-            self._mode = 0
-        Macro.flight_quantum_travel.run()
+        vjoy[1].button(BindedNames.quantum_control).is_pressed = event.is_pressed
 
-    def landing_control(self, event):
-        if event.is_pressed:
-            self._mode = 2
-        else:
-            if self._mode == 0:
-                return
-            self._mode = 0
-        Macro.flight_landing_mode.run()
+    def landing_control(self, event, vjoy):
+        vjoy[1].button(BindedNames.landing_control).is_pressed = event.is_pressed
 
     def engage(self, event, joy):
         if joy[throttle_name].button(27).is_pressed:
             if event.is_pressed:
                 Macro.flight_engage.run()
         elif joy[throttle_name].button(28).is_pressed:
-            util.short_long_press(event, Macro.flight_engage, Macro.flight_autoland)
+            util.short_long_press(event, Macro.lights, Macro.flight_autoland)
 
     def throttle_control(self, event, vjoy, joy):
         divider = 3
@@ -117,17 +110,17 @@ class FlightSystem:
                 pos = (pos / part) * max_value
 
                 if self._afterburner == False:
-                    Macro.flight_afterburner.run()
+                    vjoy[1].button(BindedNames.afterburner).is_pressed = True
                     self._afterburner = True
             else:
                 pos = (pos / (part * (divider - 1))) * max_value
 
                 if self._afterburner:
-                    Macro.flight_afterburner_release.run()
+                    vjoy[1].button(BindedNames.afterburner).is_pressed = False
                     self._afterburner = False
         else:
             if self._afterburner:
-                Macro.flight_afterburner_release.run()
+                vjoy[1].button(BindedNames.afterburner).is_pressed = False
                 self._afterburner = False
 
         # invert the axis as sc does that by default
@@ -152,3 +145,6 @@ class FlightSystem:
     def toggle_gforce(self, event):
         if event.is_pressed:
             Macro.systems_gforce_toggle.run()
+
+    def toggle_decoupled(self, event, vjoy):
+        vjoy[1].button(BindedNames.decoupled).is_pressed = event.is_pressed

@@ -23,6 +23,9 @@
 
 
 from threading import Timer
+from gremlin.input_devices import macro
+
+long_press_delay = 0.3 # in seconds
 
 
 class Utils:
@@ -33,12 +36,19 @@ class Utils:
     def get_id(self, event):
         return str(event.hardware_id) + "_" + str(event.identifier)
 
+    def run_macro_or_button_tap(macro_or_button):
+        if type(macro_or_button) == macro.Macro:
+            macro_or_button.run()
+        else:
+            macro_or_button.is_pressed = True
+            macro_or_button.is_pressed = False
+
     def short_long_press(self, event, short_macro, long_macro):
         if event.is_pressed == False:
             if self._timers[self.get_id(event)] and self._timers[self.get_id(event)].is_alive():
                 self._timers[self.get_id(event)].cancel()
-                short_macro.run()
-        else:
+                self.run_macro_or_button_tap(short_macro)
 
-            self._timers[self.get_id(event)] = Timer(0.3, long_macro.run)
+        else:
+            self._timers[self.get_id(event)] = Timer(long_press_delay, self.run_macro_or_button_tap, [long_macro])
             self._timers[self.get_id(event)].start()

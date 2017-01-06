@@ -22,12 +22,11 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-import enum
 from config import Macro, ButtonMapping
 from controllers import controllers
+import gremlin
 
-
-class HudMode(enum.Enum):
+class HudMode(object):
     VIEW_MODE_CLEAR = 0
     VIEW_MODE_HUDENTRY = 1
     VIEW_MODE_HEADLOOK = 2
@@ -43,29 +42,29 @@ class HudSystem:
         controllers.joystick.addButtonEvent(self.mode_left, ButtonMapping.joystick_hud_left)
         controllers.joystick.addButtonEvent(self.mode_press, ButtonMapping.joystick_hud_press)
 
-    def switch_headmode(self, joy):
-        if joy[controllers.throttle.name].button(28).is_pressed & self._hud_headlook_lock == HudMode.VIEW_MODE_CLEAR:
-            Macro.headlock_mode.run()
+        controllers.throttle.addButtonEvent(self.mode_switch, 14)
+
+    # def switch_hudent(self, joy):
+    #     if (joy[controllers.throttle.name].button(24).is_pressed & self._hud_headlook_lock == HudMode.VIEW_MODE_CLEAR) or (joy[controllers.throttle.name].button(24).is_pressed == False & self._hud_headlook_lock == HudMode.VIEW_MODE_HUDENTRY):
+    #         Macro.hud_interact_toggle.run()
+    #         # self._hud_headlook_lock = self._hud_headlook_lock ^ HudMode.VIEW_MODE_HUDENTRY
+
+    def mode_switch(self, event, joy):
+        if self._hud_headlook_lock is HudMode.VIEW_MODE_CLEAR and event.is_pressed:
             self._hud_headlook_lock = HudMode.VIEW_MODE_HEADLOOK
-
-        if joy[controllers.throttle.name].button(28).is_pressed == False & self._hud_headlook_lock == HudMode.VIEW_MODE_HEADLOOK:
-            Macro.headlock_mode.run()
+            Macro.hud_headlock_mode.run()
+        elif self._hud_headlook_lock is HudMode.VIEW_MODE_HEADLOOK and event.is_pressed is False:
             self._hud_headlook_lock = HudMode.VIEW_MODE_CLEAR
-
-    def switch_hudent(self, joy):
-        if (joy[controllers.throttle.name].button(24).is_pressed & self._hud_headlook_lock == HudMode.VIEW_MODE_CLEAR) or (joy[controllers.throttle.name].button(24).is_pressed == False & self._hud_headlook_lock == HudMode.VIEW_MODE_HUDENTRY):
-            Macro.hud_interact_toggle.run()
-            # self._hud_headlook_lock = self._hud_headlook_lock ^ HudMode.VIEW_MODE_HUDENTRY
+            Macro.hud_headlock_mode_release.run()
 
     def mode_press_fn(self, event, joy, hud_macro, power_macro, shield_macro):
         if event.is_pressed:
-            if joy[controllers.throttle.name].button(24).is_pressed:
+            if joy[controllers.throttle.name].button(24).is_pressed is False:
                 hud_macro.run()
             else:
                 if joy[controllers.throttle.name].button(13).is_pressed:
                     power_macro.run()
-                elif joy[controllers.throttle.name].button(14).is_pressed:
-                    self.switch_headmode(joy)
+                elif self._hud_headlook_lock == HudMode.VIEW_MODE_HEADLOOK:
                     hud_macro.run()
                 else:
                     shield_macro.run()

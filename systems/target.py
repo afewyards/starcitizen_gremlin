@@ -22,7 +22,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-from config import Macro, ButtonMapping
+from config import Macro, ButtonMapping, BindedNames
 from utils import Utils
 from controllers import controllers
 
@@ -36,8 +36,14 @@ class TargetSystem:
         controllers.joystick.addButtonEvent(self.reticle_target, ButtonMapping.joystick_target_reticle)
         controllers.joystick.addButtonEvent(self.target_cycle_hostile, ButtonMapping.joystick_target_cycle_hostile)
         controllers.joystick.addButtonEvent(self.target_cycle_pinned, ButtonMapping.joystick_target_cycle_pinned)
-        controllers.joystick.addButtonEvent(self.target_cycle_all, 11)
-        controllers.joystick.addButtonEvent(self.target_cycle_friendly, 13)
+        controllers.joystick.addButtonEvent(self.target_cycle_all, ButtonMapping.joystick_target_cycle_all)
+        controllers.joystick.addButtonEvent(self.target_cycle_friendly, ButtonMapping.joystick_target_cycle_friendly)
+
+        controllers.throttle.addButtonEvent(self.missile_lock, ButtonMapping.throttle_missile_lock)
+
+
+    def missile_lock(self, event, vjoy):
+        util.short_long_press(event, Macro.target_cycle_hostile_fwd, vjoy[1].button(BindedNames.missile_lock))
 
     def nearest_target(self, event):
         util.short_long_press(event, Macro.target_nearest_hostile, Macro.target_pin)

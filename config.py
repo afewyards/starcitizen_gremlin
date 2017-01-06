@@ -29,7 +29,6 @@ hold_long_time = 0.9
 
 
 class DeviceConfig(object):
-
     joystick_name = 'Joystick - HOTAS Warthog'
     joystick_id = 72287234
 
@@ -82,6 +81,19 @@ class AxisMapping(object):
     throttle_horizontal = 2
 
 
+class BindedNames(object):
+    fire_group_1 = 1
+    fire_group_2 = 2
+    fire_group_3 = 3
+    fire_missiles = 4
+    missile_lock = 5
+    brake = 6
+    afterburner = 7
+    landing_control = 8
+    quantum_control = 9
+    decoupled = 10
+
+
 class ButtonMapping(object):
     joystick_fire_group_1 = 1
     joystick_fire_group_2 = 6
@@ -94,6 +106,8 @@ class ButtonMapping(object):
     joystick_target_cycle_hostile = 8
     joystick_target_nearest = 9
     joystick_target_cycle_pinned = 10
+    joystick_target_cycle_all = 11
+    joystick_target_cycle_friendly = 13
 
     joystick_hud_up = 15
     joystick_hud_right = 16
@@ -101,6 +115,7 @@ class ButtonMapping(object):
     joystick_hud_left = 18
     joystick_hud_press = 19
 
+    throttle_brake = 7
     throttle_boost = 2
     throttle_quantum_control = 27
     throttle_landing_control = 28
@@ -109,6 +124,11 @@ class ButtonMapping(object):
     throttle_flapsd = 23
     throttle_comstab = 11
     throttle_gforce = 12
+
+    throttle_decoupled_fwd = 9
+    throttle_decoupled_bck = 10
+
+    throttle_missile_lock = 8
 
     throttle_rdr_altm = 25
     throttle_eac = 24
@@ -136,7 +156,7 @@ class Macro(object):
     power_increase_shield = macro.Macro()
     power_increase_shield.tap(macro.Keys.Num2)
     power_increase_avionic = macro.Macro()
-    power_increase_avionic.tap(macro.Keys.Num2)
+    power_increase_avionic.tap(macro.Keys.Num3)
     power_reset = macro.Macro()
     power_reset.tap(macro.Keys.Num0)
     power_switch_weapon = macro.Macro()
@@ -186,6 +206,11 @@ class Macro(object):
     systems_gforce_toggle.tap(macro.Keys.K)
     systems_gforce_toggle.release(macro.Keys.LAlt)
 
+    lights = macro.Macro()
+    lights.press(macro.Keys.LAlt)
+    lights.tap(macro.Keys.T)
+    lights.release(macro.Keys.LAlt)
+
     self_destruct = macro.Macro()
     self_destruct.press(macro.Keys.RAlt)
     self_destruct.press(macro.Keys.Backspace)
@@ -215,26 +240,26 @@ class Macro(object):
 
     flight_engage = macro.Macro()
     flight_engage.tap(macro.Keys.F)
-    flight_landing_mode = macro.Macro()
-    flight_landing_mode.tap(macro.Keys.N)
+    # flight_landing_mode = macro.Macro()
+    # flight_landing_mode.tap(macro.Keys.N)
     flight_autoland = macro.Macro()
     flight_autoland.press(macro.Keys.N)
     flight_autoland.pause(hold_time)
     flight_autoland.release(macro.Keys.N)
-    flight_quantum_travel = macro.Macro()
-    flight_quantum_travel.tap(macro.Keys.B)
-    flight_decoupled_mode = macro.Macro()
-    flight_decoupled_mode.tap(macro.Keys.C)
+    # flight_quantum_travel = macro.Macro()
+    # flight_quantum_travel.tap(macro.Keys.B)
+    # flight_decoupled_mode = macro.Macro()
+    # flight_decoupled_mode.tap(macro.Keys.C)
     flight_match_target_speed = macro.Macro()
     flight_match_target_speed.tap(macro.Keys.M)
     flight_boost = macro.Macro()
     flight_boost.press(macro.Keys.X)
     flight_boost_release = macro.Macro()
     flight_boost_release.release(macro.Keys.X)
-    flight_afterburner = macro.Macro()
-    flight_afterburner.press(macro.Keys.LShift)
-    flight_afterburner_release = macro.Macro()
-    flight_afterburner_release.release(macro.Keys.LShift)
+    # flight_afterburner = macro.Macro()
+    # flight_afterburner.press(macro.Keys.LShift)
+    # flight_afterburner_release = macro.Macro()
+    # flight_afterburner_release.release(macro.Keys.LShift)
     flight_spacebrake = macro.Macro()
     flight_spacebrake.press(macro.Keys.LAlt)
     flight_spacebrake.tap(macro.Keys.X)
@@ -248,7 +273,11 @@ class Macro(object):
     counter_measures_fire.tap(macro.Keys.G)
 
     hud_headlock_mode = macro.Macro()
-    hud_headlock_mode.tap(macro.Keys.Z)
+    hud_headlock_mode.press(macro.Keys.Z)
+    hud_headlock_mode.pause(0.1)
+    hud_headlock_mode.tap(macro.Keys.S)
+    hud_headlock_mode_release = macro.Macro()
+    hud_headlock_mode_release.release(macro.Keys.Z)
     hud_interact_toggle = macro.Macro()
     hud_interact_toggle.tap(macro.Keys.F3)
 
