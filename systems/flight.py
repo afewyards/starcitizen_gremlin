@@ -35,6 +35,7 @@ class FlightSystem:
 
     def __init__(self):
         self._afterburner = False
+        self._landing_mode = False
         self._active_pitch_yaw_curve = Curve.pitch_yaw_curve
         self._active_thruster_curve = Curve.thruster_curve
         self._active_rudder_curve = Curve.pitch_yaw_curve
@@ -80,16 +81,15 @@ class FlightSystem:
         vjoy[1].button(BindedNames.brake).is_pressed = event.is_pressed
 
     def boost(self, event):
-        if event.is_pressed:
-            Macro.flight_boost.run()
-        else:
-            Macro.flight_boost_release.run()
+        vjoy[1].button(BindedNames.boost).is_pressed = event.is_pressed
 
     def quantum_control(self, event):
         vjoy[1].button(BindedNames.quantum_control).is_pressed = event.is_pressed
 
-    def landing_control(self, event, vjoy):
+    def landing_control(self, event, vjoy, joy):
         vjoy[1].button(BindedNames.landing_control).is_pressed = event.is_pressed
+        self._landing_mode = event.is_pressed
+        self.set_flaps(self, event, vjoy, joy)
 
     def engage(self, event, joy):
         if joy[throttle_name].button(ButtonMapping.throttle_quantum_control).is_pressed:
@@ -104,7 +104,7 @@ class FlightSystem:
         part = max_value / divider
         pos = max_value - (joy[throttle_name].axis(4).value + 1)
 
-        if joy[throttle_name].button(ButtonMapping.throttle_flapsu).is_pressed:
+        if joy[throttle_name].button(ButtonMapping.throttle_flapsu).is_pressed and self._landing_mode is False:
             if (pos > (part * (divider - 1)) + part / (7 - divider)):
                 pos = pos - (part * (divider - 1))
                 pos = (pos / part) * max_value
@@ -128,10 +128,10 @@ class FlightSystem:
 
     def set_flaps(self, event, vjoy, joy):
         self.throttle_control(event, vjoy, joy)
-        if joy[throttle_name].button(ButtonMapping.throttle_flapsu).is_pressed:
+        if joy[throttle_name].button(ButtonMapping.throttle_flapsu).is_pressed and self._landing_mode is False:
             self._active_pitch_yaw_curve = Curve.pitch_yaw_curve
             self._active_thruster_curve = Curve.thruster_curve_u
-        elif joy[throttle_name].button(ButtonMapping.throttle_flapsd).is_pressed:
+        elif joy[throttle_name].button(ButtonMapping.throttle_flapsd).is_pressed or self._landing_mode is True:
             self._active_pitch_yaw_curve = Curve.pitch_yaw_curve_d
             self._active_thruster_curve = Curve.thruster_curve_d
         else:

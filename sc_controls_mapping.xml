@@ -33,17 +33,20 @@
         <action name="v_brake">
             <rebind input="js1_button7"/>
         </action>
-        <action name="v_afterburner">
+        <action name="v_boost">
             <rebind input="js1_button8"/>
         </action>
-        <action name="v_toggle_landing_system">
-            <rebind input="js1_button9" activationMode="hold"/>
+        <action name="v_afterburner">
+            <rebind input="js1_button9"/>
         </action>
-        <action name="v_toggle_qdrive_engagement">
+        <action name="v_toggle_landing_system">
             <rebind input="js1_button10" activationMode="hold"/>
         </action>
-        <action name="v_ifcs_toggle_vector_decoupling">
+        <action name="v_toggle_qdrive_engagement">
             <rebind input="js1_button11" activationMode="hold"/>
+        </action>
+        <action name="v_ifcs_toggle_vector_decoupling">
+            <rebind input="js1_button12" activationMode="hold"/>
         </action>
         <action name="v_ifcs_toggle_comstab">
             <rebind input="kb1_lalt+j"/>

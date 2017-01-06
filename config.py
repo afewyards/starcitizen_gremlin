@@ -89,10 +89,11 @@ class BindedNames(object):
     missile_lock = 5
     cycle_missiles = 6
     brake = 7
-    afterburner = 8
-    landing_control = 9
-    quantum_control = 10
-    decoupled = 11
+    boost = 8
+    afterburner = 9
+    landing_control = 10
+    quantum_control = 11
+    decoupled = 12
 
 
 class ButtonMapping(object):
