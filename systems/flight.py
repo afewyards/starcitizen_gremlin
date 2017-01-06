@@ -80,16 +80,16 @@ class FlightSystem:
     def brake(self, event, vjoy):
         vjoy[1].button(BindedNames.brake).is_pressed = event.is_pressed
 
-    def boost(self, event):
+    def boost(self, event, vjoy):
         vjoy[1].button(BindedNames.boost).is_pressed = event.is_pressed
 
-    def quantum_control(self, event):
+    def quantum_control(self, event, vjoy):
         vjoy[1].button(BindedNames.quantum_control).is_pressed = event.is_pressed
 
     def landing_control(self, event, vjoy, joy):
         vjoy[1].button(BindedNames.landing_control).is_pressed = event.is_pressed
         self._landing_mode = event.is_pressed
-        self.set_flaps(self, event, vjoy, joy)
+        self.set_flaps(event, vjoy, joy)
 
     def engage(self, event, joy):
         if joy[throttle_name].button(ButtonMapping.throttle_quantum_control).is_pressed:
