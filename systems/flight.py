@@ -92,10 +92,10 @@ class FlightSystem:
         vjoy[1].button(BindedNames.landing_control).is_pressed = event.is_pressed
 
     def engage(self, event, joy):
-        if joy[throttle_name].button(27).is_pressed:
+        if joy[throttle_name].button(ButtonMapping.throttle_quantum_control).is_pressed:
             if event.is_pressed:
                 Macro.flight_engage.run()
-        elif joy[throttle_name].button(28).is_pressed:
+        elif joy[throttle_name].button(ButtonMapping.throttle_landing_control).is_pressed:
             util.short_long_press(event, Macro.lights, Macro.flight_autoland)
 
     def throttle_control(self, event, vjoy, joy):
@@ -104,7 +104,7 @@ class FlightSystem:
         part = max_value / divider
         pos = max_value - (joy[throttle_name].axis(4).value + 1)
 
-        if joy[throttle_name].button(22).is_pressed:
+        if joy[throttle_name].button(ButtonMapping.throttle_flapsu).is_pressed:
             if (pos > (part * (divider - 1)) + part / (7 - divider)):
                 pos = pos - (part * (divider - 1))
                 pos = (pos / part) * max_value
@@ -128,10 +128,10 @@ class FlightSystem:
 
     def set_flaps(self, event, vjoy, joy):
         self.throttle_control(event, vjoy, joy)
-        if joy[throttle_name].button(22).is_pressed:
+        if joy[throttle_name].button(ButtonMapping.throttle_flapsu).is_pressed:
             self._active_pitch_yaw_curve = Curve.pitch_yaw_curve
             self._active_thruster_curve = Curve.thruster_curve_u
-        elif joy[throttle_name].button(23).is_pressed:
+        elif joy[throttle_name].button(ButtonMapping.throttle_flapsd).is_pressed:
             self._active_pitch_yaw_curve = Curve.pitch_yaw_curve_d
             self._active_thruster_curve = Curve.thruster_curve_d
         else:

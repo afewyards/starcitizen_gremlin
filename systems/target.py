@@ -43,7 +43,7 @@ class TargetSystem:
 
 
     def missile_lock(self, event, vjoy):
-        util.short_long_press(event, Macro.target_cycle_hostile_fwd, vjoy[1].button(BindedNames.missile_lock))
+        util.short_long_press(event, vjoy[1].button(BindedNames.cycle_missiles), vjoy[1].button(BindedNames.missile_lock))
 
     def nearest_target(self, event):
         util.short_long_press(event, Macro.target_nearest_hostile, Macro.target_pin)

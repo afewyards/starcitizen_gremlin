@@ -87,11 +87,12 @@ class BindedNames(object):
     fire_group_3 = 3
     fire_missiles = 4
     missile_lock = 5
-    brake = 6
-    afterburner = 7
-    landing_control = 8
-    quantum_control = 9
-    decoupled = 10
+    cycle_missiles = 6
+    brake = 7
+    afterburner = 8
+    landing_control = 9
+    quantum_control = 10
+    decoupled = 11
 
 
 class ButtonMapping(object):
@@ -129,6 +130,9 @@ class ButtonMapping(object):
     throttle_decoupled_bck = 10
 
     throttle_missile_lock = 8
+
+    throttle_quantum_control = 27
+    throttle_landing_control = 28
 
     throttle_rdr_altm = 25
     throttle_eac = 24

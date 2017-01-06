@@ -21,9 +21,6 @@
     </options>
     <modifiers/>
     <actionmap name="spaceship_movement">
-        <action name="v_brake">
-            <rebind input="js1_button6"/>
-        </action>
         <action name="v_throttle_abs">
             <rebind input="js1_z"/>
         </action>
@@ -33,23 +30,26 @@
         <action name="v_strafe_lateral">
             <rebind input="js1_rotx"/>
         </action>
+        <action name="v_brake">
+            <rebind input="js1_button7"/>
+        </action>
+        <action name="v_afterburner">
+            <rebind input="js1_button8"/>
+        </action>
+        <action name="v_toggle_landing_system">
+            <rebind input="js1_button9" activationMode="hold"/>
+        </action>
+        <action name="v_toggle_qdrive_engagement">
+            <rebind input="js1_button10" activationMode="hold"/>
+        </action>
+        <action name="v_ifcs_toggle_vector_decoupling">
+            <rebind input="js1_button11" activationMode="hold"/>
+        </action>
         <action name="v_ifcs_toggle_comstab">
             <rebind input="kb1_lalt+j"/>
         </action>
         <action name="v_ifcs_toggle_gforce_safety">
             <rebind input="kb1_lalt+k"/>
-        </action>
-        <action name="v_ifcs_toggle_vector_decoupling">
-            <rebind input="js1_ "/>
-        </action>
-        <action name="v_toggle_landing_system">
-            <rebind input="js1_button8" activationMode="hold"/>
-        </action>
-        <action name="v_toggle_qdrive_engagement">
-            <rebind input="js1_button9" activationMode="hold"/>
-        </action>
-        <action name="v_ifcs_toggle_vector_decoupling">
-            <rebind input="js1_button10" activationMode="hold"/>
         </action>
     </actionmap>
     <actionmap name="spaceship_targeting">
@@ -59,7 +59,10 @@
     </actionmap>
     <actionmap name="spaceship_missiles">
         <action name="v_weapon_launch_missile">
-            <rebind input="js3_button2"/>
+            <rebind input="js1_button4"/>
+        </action>
+        <action name="v_weapon_cycle_missile_fwd">
+            <rebind input="js1_button6"/>
         </action>
     </actionmap>
 </ActionMaps>
