@@ -37,12 +37,16 @@ class Utils:
     def get_id(self, event):
         return str(event.hardware_id) + "_" + str(event.identifier)
 
+    def set_button_false(self, button):
+        button.is_pressed = False
+
     def run_macro_or_button_tap(self, macro_or_button):
         if isinstance(macro_or_button, macro.Macro):
             macro_or_button.run()
         else:
             macro_or_button.is_pressed = True
-            macro_or_button.is_pressed = False
+            timer = Timer(0.1, self.set_button_false, [macro_or_button])
+            timer.start()
 
     def short_long_press(self, event, short_macro, long_macro):
         if event.is_pressed == False:

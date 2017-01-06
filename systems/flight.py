@@ -36,6 +36,7 @@ class FlightSystem:
     def __init__(self):
         self._afterburner = False
         self._landing_mode = False
+        self._quantum_mode = False
         self._active_pitch_yaw_curve = Curve.pitch_yaw_curve
         self._active_thruster_curve = Curve.thruster_curve
         self._active_rudder_curve = Curve.pitch_yaw_curve
@@ -84,7 +85,10 @@ class FlightSystem:
         vjoy[1].button(BindedNames.boost).is_pressed = event.is_pressed
 
     def quantum_control(self, event, vjoy):
-        vjoy[1].button(BindedNames.quantum_control).is_pressed = event.is_pressed
+        if self._quantum_mode and event.is_pressed is False:
+            self._quantum_mode = False
+        else:
+            vjoy[1].button(BindedNames.quantum_control).is_pressed = vjoy[1].button(BindedNames.quantum_control).is_pressed is False
 
     def landing_control(self, event, vjoy, joy):
         vjoy[1].button(BindedNames.landing_control).is_pressed = event.is_pressed
@@ -95,6 +99,7 @@ class FlightSystem:
         if joy[throttle_name].button(ButtonMapping.throttle_quantum_control).is_pressed:
             if event.is_pressed:
                 Macro.flight_engage.run()
+                self._quantum_mode = True
         elif joy[throttle_name].button(ButtonMapping.throttle_landing_control).is_pressed:
             util.short_long_press(event, Macro.lights, Macro.flight_autoland)
 
