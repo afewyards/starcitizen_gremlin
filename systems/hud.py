@@ -44,11 +44,6 @@ class HudSystem:
 
         controllers.throttle.addButtonEvent(self.mode_switch, 14)
 
-    # def switch_hudent(self, joy):
-    #     if (joy[controllers.throttle.name].button(24).is_pressed & self._hud_headlook_lock == HudMode.VIEW_MODE_CLEAR) or (joy[controllers.throttle.name].button(24).is_pressed == False & self._hud_headlook_lock == HudMode.VIEW_MODE_HUDENTRY):
-    #         Macro.hud_interact_toggle.run()
-    #         # self._hud_headlook_lock = self._hud_headlook_lock ^ HudMode.VIEW_MODE_HUDENTRY
-
     def mode_switch(self, event, joy):
         if self._hud_headlook_lock is HudMode.VIEW_MODE_CLEAR and event.is_pressed:
             self._hud_headlook_lock = HudMode.VIEW_MODE_HEADLOOK

@@ -53,7 +53,7 @@ class FlightSystem:
 
         controllers.throttle.addButtonEvent(self.brake, ButtonMapping.throttle_brake)
         controllers.throttle.addButtonEvent(self.boost, ButtonMapping.throttle_boost)
-        controllers.throttle.addButtonEvent(self.quantum_control, ButtonMapping.throttle_quantum_control)
+        # controllers.throttle.addButtonEvent(self.quantum_control, ButtonMapping.throttle_quantum_control)
         controllers.throttle.addButtonEvent(self.landing_control, ButtonMapping.throttle_landing_control)
         controllers.throttle.addButtonEvent(self.engage, ButtonMapping.throttle_engage)
         controllers.throttle.addButtonEvent(self.set_flaps, ButtonMapping.throttle_flapsu)
@@ -84,24 +84,15 @@ class FlightSystem:
     def boost(self, event, vjoy):
         vjoy[1].button(BindedNames.boost).is_pressed = event.is_pressed
 
-    def quantum_control(self, event, vjoy):
-        if self._quantum_mode and event.is_pressed is False:
-            self._quantum_mode = False
-        else:
-            vjoy[1].button(BindedNames.quantum_control).is_pressed = vjoy[1].button(BindedNames.quantum_control).is_pressed is False
-
     def landing_control(self, event, vjoy, joy):
-        vjoy[1].button(BindedNames.landing_control).is_pressed = event.is_pressed
         self._landing_mode = event.is_pressed
         self.set_flaps(event, vjoy, joy)
 
-    def engage(self, event, joy):
+    def engage(self, event, vjoy, joy):
         if joy[throttle_name].button(ButtonMapping.throttle_quantum_control).is_pressed:
-            if event.is_pressed:
-                Macro.flight_engage.run()
-                self._quantum_mode = True
+            util.short_long_press(event, vjoy[1].button(BindedNames.quantum_control), Macro.flight_engage)
         elif joy[throttle_name].button(ButtonMapping.throttle_landing_control).is_pressed:
-            util.short_long_press(event, Macro.lights, Macro.flight_autoland)
+            util.short_long_press(event, vjoy[1].button(BindedNames.landing_control), Macro.flight_autoland)
 
     def throttle_control(self, event, vjoy, joy):
         divider = 3

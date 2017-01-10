@@ -52,10 +52,10 @@
             <rebind input="js1_button9"/>
         </action>
         <action name="v_toggle_landing_system">
-            <rebind input="js1_button10" activationMode="hold_toggle"/>
+            <rebind input="js1_button10"/>
         </action>
         <action name="v_toggle_qdrive_system">
-            <rebind input="js1_button11" activationMode="hold_toggle"/>
+            <rebind input="js1_button11"/>
         </action>
         <action name="v_ifcs_toggle_vector_decoupling">
             <rebind input="js1_button12" activationMode="hold_toggle"/>
