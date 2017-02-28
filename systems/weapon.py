@@ -22,40 +22,40 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-from config import ButtonMapping, BindedNames
+from config import Button, VjoyButton
 from controllers import controllers
 
 
 class WeaponSystem:
 
     def __init__(self):
-        controllers.joystick.addButtonEvent(self.fire_primary_active_group, ButtonMapping.joystick_fire_group_1)
-        controllers.joystick.addButtonEvent(self.fire_secondary_active_group, ButtonMapping.joystick_fire_group_2)
-        controllers.joystick.addButtonEvent(self.fire_third_active_group, ButtonMapping.joystick_fire_group_3)
-        controllers.joystick.addButtonEvent(self.fire_missiles, ButtonMapping.joystick_fire_missiles)
-        controllers.joystick.addButtonEvent(self.fire_counter_measures, ButtonMapping.joystick_fire_counter_measures)
-        controllers.joystick.addButtonEvent(self.cycle_counter_measures, ButtonMapping.joystick_cycle_counter_measures)
+        controllers.joystick.addButtonEvent(self.fire_primary_active_group, Button.joystick_fire_group_1)
+        controllers.joystick.addButtonEvent(self.fire_secondary_active_group, Button.joystick_fire_group_2)
+        controllers.joystick.addButtonEvent(self.fire_third_active_group, Button.joystick_fire_group_3)
+        controllers.joystick.addButtonEvent(self.fire_missiles, Button.joystick_fire_missiles)
+        controllers.joystick.addButtonEvent(self.fire_counter_measures, Button.joystick_fire_counter_measures)
+        controllers.joystick.addButtonEvent(self.cycle_counter_measures, Button.joystick_cycle_counter_measures)
 
     def fire_primary_active_group(self, event, vjoy, joy):
-        if joy[controllers.throttle.name].button(ButtonMapping.throttle_rdr_altm).is_pressed:
-            vjoy[1].button(BindedNames.fire_group_1).is_pressed = event.is_pressed
+        if joy[controllers.throttle.name].button(Button.throttle_rdr_altm).is_pressed:
+            vjoy[1].button(VjoyButton.fire_group_1).is_pressed = event.is_pressed
         else:
-            vjoy[1].button(BindedNames.fire_group_2).is_pressed = event.is_pressed
+            vjoy[1].button(VjoyButton.fire_group_2).is_pressed = event.is_pressed
 
     def fire_secondary_active_group(self, event, vjoy, joy):
-        if joy[controllers.throttle.name].button(ButtonMapping.throttle_rdr_altm).is_pressed:
-            vjoy[1].button(BindedNames.fire_group_2).is_pressed = event.is_pressed
+        if joy[controllers.throttle.name].button(Button.throttle_rdr_altm).is_pressed:
+            vjoy[1].button(VjoyButton.fire_group_2).is_pressed = event.is_pressed
         else:
-            vjoy[1].button(BindedNames.fire_group_1).is_pressed = event.is_pressed
+            vjoy[1].button(VjoyButton.fire_group_1).is_pressed = event.is_pressed
 
     def fire_third_active_group(self, event, vjoy):
-        vjoy[1].button(BindedNames.fire_group_3).is_pressed = event.is_pressed
+        vjoy[1].button(VjoyButton.fire_group_3).is_pressed = event.is_pressed
 
     def fire_missiles(self, event, vjoy):
-        vjoy[1].button(BindedNames.missiles_fire).is_pressed = event.is_pressed
+        vjoy[1].button(VjoyButton.missiles_fire).is_pressed = event.is_pressed
 
     def fire_counter_measures(self, event, vjoy):
-        vjoy[1].button(BindedNames.counter_measures_fire).is_pressed = event.is_pressed
+        vjoy[1].button(VjoyButton.counter_measures_fire).is_pressed = event.is_pressed
 
     def cycle_counter_measures(self, event, vjoy):
-        vjoy[1].button(BindedNames.counter_measures_cycle).is_pressed = event.is_pressed
+        vjoy[1].button(VjoyButton.counter_measures_cycle).is_pressed = event.is_pressed

@@ -22,7 +22,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-from config import ButtonMapping, BindedNames
+from config import Button, VjoyButton
 from utils import Utils
 from controllers import controllers
 
@@ -32,38 +32,38 @@ util = Utils()
 class TargetSystem:
 
     def __init__(self):
-        controllers.joystick.addButtonEvent(self.nearest_target, ButtonMapping.joystick_target_nearest)
-        controllers.joystick.addButtonEvent(self.reticle_target, ButtonMapping.joystick_target_reticle)
-        controllers.joystick.addButtonEvent(self.target_cycle_hostile, ButtonMapping.joystick_target_cycle_hostile)
-        controllers.joystick.addButtonEvent(self.target_cycle_pinned, ButtonMapping.joystick_target_cycle_pinned)
-        controllers.joystick.addButtonEvent(self.target_cycle_all, ButtonMapping.joystick_target_cycle_all)
-        controllers.joystick.addButtonEvent(self.target_cycle_friendly, ButtonMapping.joystick_target_cycle_friendly)
+        controllers.joystick.addButtonEvent(self.nearest_target, Button.joystick_target_nearest)
+        controllers.joystick.addButtonEvent(self.reticle_target, Button.joystick_target_reticle)
+        controllers.joystick.addButtonEvent(self.target_cycle_hostile, Button.joystick_target_cycle_hostile)
+        controllers.joystick.addButtonEvent(self.target_cycle_pinned, Button.joystick_target_cycle_pinned)
+        controllers.joystick.addButtonEvent(self.target_cycle_all, Button.joystick_target_cycle_all)
+        controllers.joystick.addButtonEvent(self.target_cycle_friendly, Button.joystick_target_cycle_friendly)
 
-        controllers.throttle.addButtonEvent(self.missile_lock, ButtonMapping.throttle_missile_lock)
-        controllers.throttle.addButtonEvent(self.reticle_mode, ButtonMapping.throttle_reticle)
+        controllers.throttle.addButtonEvent(self.missile_lock, Button.throttle_missile_lock)
+        controllers.throttle.addButtonEvent(self.reticle_mode, Button.throttle_reticle)
 
 
     def missile_lock(self, event, vjoy):
-        util.short_long_press(event, vjoy[1].button(BindedNames.missiles_lock), vjoy[1].button(BindedNames.missiles_cycle))
+        util.short_long_press(event, vjoy[1].button(VjoyButton.missiles_lock), vjoy[1].button(VjoyButton.missiles_cycle))
 
     def nearest_target(self, event, vjoy):
-        util.short_long_press(event, vjoy[1].button(BindedNames.target_nearest_hostile), vjoy[1].button(BindedNames.target_pin))
+        util.short_long_press(event, vjoy[1].button(VjoyButton.target_nearest_hostile), vjoy[1].button(VjoyButton.target_pin))
 
     def reticle_target(self, event, vjoy):
-        util.short_long_press(event, vjoy[1].button(BindedNames.target_reticle_focus), vjoy[1].button(BindedNames.target_pin))
+        util.short_long_press(event, vjoy[1].button(VjoyButton.target_reticle_focus), vjoy[1].button(VjoyButton.target_pin))
 
     def target_cycle_hostile(self, event, vjoy):
-        util.short_long_press(event, vjoy[1].button(BindedNames.target_cycle_hostile_fwd), vjoy[1].button(BindedNames.target_cycle_hostile_bck))
+        util.short_long_press(event, vjoy[1].button(VjoyButton.target_cycle_hostile_fwd), vjoy[1].button(VjoyButton.target_cycle_hostile_bck))
 
     def target_cycle_pinned(self, event, vjoy):
-        util.short_long_press(event, vjoy[1].button(BindedNames.target_cycle_pinned_fwd), vjoy[1].button(BindedNames.target_cycle_pinned_bck))
+        util.short_long_press(event, vjoy[1].button(VjoyButton.target_cycle_pinned_fwd), vjoy[1].button(VjoyButton.target_cycle_pinned_bck))
 
     def target_cycle_all(self, event, vjoy):
-        util.short_long_press(event, vjoy[1].button(BindedNames.target_cycle_all_fwd), vjoy[1].button(BindedNames.target_cycle_all_bck))
+        util.short_long_press(event, vjoy[1].button(VjoyButton.target_cycle_all_fwd), vjoy[1].button(VjoyButton.target_cycle_all_bck))
 
     def target_cycle_friendly(self, event, vjoy):
-        util.short_long_press(event, vjoy[1].button(BindedNames.target_cycle_friendly_fwd), vjoy[1].button(BindedNames.target_cycle_friendly_bck))
+        util.short_long_press(event, vjoy[1].button(VjoyButton.target_cycle_friendly_fwd), vjoy[1].button(VjoyButton.target_cycle_friendly_bck))
 
     def reticle_mode(self, event, vjoy):
-        util.short_long_press(event, vjoy[1].button(BindedNames.systems_pip), vjoy[1].button(BindedNames.systems_gimbal_lock_toggle))
+        util.short_long_press(event, vjoy[1].button(VjoyButton.systems_pip), vjoy[1].button(VjoyButton.systems_gimbal_lock_toggle))
     # left (14) - right (12) - hud

@@ -93,7 +93,7 @@
             <rebind input="js1_button8"/>
         </action>
         <action name="v_afterburner">
-          <rebind input="js1_button9"/>
+            <rebind input="js1_button9"/>
         </action>
         <action name="v_autoland">
             <rebind input="js1_button12"/>
@@ -119,6 +119,15 @@
         <action name="v_toggle_qdrive_system">
             <rebind input="js1_button16"/>
         </action>
+        <action name="v_toggle_landing_system">
+            <rebind input="js1_button15"/>
+        </action>
+        <!-- <action name="v_cycle_landing_mode">
+            <rebind input="js1_ "/>
+        </action>
+        <action name="v_landing_target_lock">
+            <rebind input="js1_ "/>
+        </action> -->
     </actionmap>
     <actionmap name="spaceship_targeting">
         <!-- <action name="scan_active_ping">

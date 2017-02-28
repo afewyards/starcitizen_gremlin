@@ -39,10 +39,14 @@ class Utils:
 
     def tap(self, button):
         button.is_pressed = True
-        timer = Timer(0.1, self.set_button_false, [button])
+        timer = Timer(0.1, self.tap_release, [button])
         timer.start()
 
-    def set_button_false(self, button):
+    def tap_delayed(self, button, delay):
+        timer = Timer(delay, self.tap, [button])
+        timer.start()
+
+    def tap_release(self, button):
         button.is_pressed = False
 
     def run_macro_or_button_tap(self, macro_or_button):
