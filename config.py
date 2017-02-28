@@ -75,7 +75,7 @@ class Curve(object):
 class AxisMapping(object):
     joystick_x = 1
     joystick_y = 2
-    rudder_roll = 4
+    rudder_roll = 1
     throttle = 4
     throttle_vertical = 1
     throttle_horizontal = 2
@@ -85,15 +85,60 @@ class BindedNames(object):
     fire_group_1 = 1
     fire_group_2 = 2
     fire_group_3 = 3
-    fire_missiles = 4
-    missile_lock = 5
-    cycle_missiles = 6
-    brake = 7
-    boost = 8
-    afterburner = 9
-    landing_control = 10
-    quantum_control = 11
-    decoupled = 12
+
+    missiles_fire = 4
+    missiles_lock = 5
+    missiles_cycle = 6
+
+    flight_brake = 7
+    flight_boost = 8
+    flight_afterburner = 9
+    flight_decoupled = 10
+    flight_match_speed = 11
+
+    flight_system_engage = 12
+    flight_system_comstab = 13
+    flight_system_gforce = 14
+    fligth_system_landing = 15
+    flight_system_quantum = 16
+
+    hud_mode = 17
+    hud_up = 18
+    hud_right = 19
+    hud_down = 20
+    hud_left = 21
+
+    target_nearest_hostile = 22
+    target_reticle_focus = 23
+    target_cycle_all_fwd = 24
+    target_cycle_all_bck = 25
+    target_cycle_friendly_fwd = 26
+    target_cycle_friendly_bck = 27
+    target_cycle_hostile_fwd = 28
+    target_cycle_hostile_bck = 29
+    target_cycle_pinned_fwd = 30
+    target_cycle_pinned_bck = 31
+    target_pin = 32
+
+    systems_pip = 33
+    systems_gimbal_lock_toggle = 34
+
+    self_destruct = 35
+    eject = 36
+
+    counter_measures_cycle = 37
+    counter_measures_fire = 38
+
+    shield_raise_front = 39
+    shield_raise_right = 40
+    shield_raise_back = 41
+    shield_raise_left = 42
+    shield_reset = 43
+
+    power_increase_weapon = 44
+    power_increase_shield = 45
+    power_increase_avionic = 46
+    power_reset = 47
 
 
 class ButtonMapping(object):
@@ -101,8 +146,8 @@ class ButtonMapping(object):
     joystick_fire_group_2 = 6
     joystick_fire_group_3 = 5
     joystick_fire_missiles = 2
-    joystick_fire_counter_measures = 3
-    joystick_cycle_counter_measures = 4
+    joystick_cycle_counter_measures = 3
+    joystick_fire_counter_measures = 4
 
     joystick_target_reticle = 7
     joystick_target_cycle_hostile = 8
@@ -116,9 +161,13 @@ class ButtonMapping(object):
     joystick_hud_down = 17
     joystick_hud_left = 18
     joystick_hud_press = 19
+    joystick_hat = 1
 
+    throttle_reticle = 15
     throttle_brake = 7
     throttle_boost = 2
+    throttle_hud_power_mode = 13
+    throttle_hud_panel_mode = 14
     throttle_quantum_control = 27
     throttle_landing_control = 28
     throttle_engage = 26
@@ -175,7 +224,9 @@ class Macro(object):
     target_nearest_hostile = macro.Macro()
     target_nearest_hostile.tap(macro.Keys.T)
     target_reticle_focus = macro.Macro()
-    target_reticle_focus.tap(macro.Keys.R)
+    target_reticle_focus.press(macro.Keys.R)
+    target_reticle_focus.pause(0.2)
+    target_reticle_focus.release(macro.Keys.R)
     target_cycle_all_fwd = macro.Macro()
     target_cycle_all_fwd.tap(macro.Keys.I)
     target_cycle_all_bck = macro.Macro()

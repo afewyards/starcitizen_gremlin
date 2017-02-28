@@ -22,7 +22,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-from config import ButtonMapping, BindedNames, Macro
+from config import ButtonMapping, BindedNames
 from controllers import controllers
 
 
@@ -52,12 +52,10 @@ class WeaponSystem:
         vjoy[1].button(BindedNames.fire_group_3).is_pressed = event.is_pressed
 
     def fire_missiles(self, event, vjoy):
-        vjoy[1].button(BindedNames.fire_missiles).is_pressed = event.is_pressed
+        vjoy[1].button(BindedNames.missiles_fire).is_pressed = event.is_pressed
 
-    def fire_counter_measures(self, event):
-        if event.is_pressed:
-            Macro.counter_measures_fire.run()
+    def fire_counter_measures(self, event, vjoy):
+        vjoy[1].button(BindedNames.counter_measures_fire).is_pressed = event.is_pressed
 
-    def cycle_counter_measures(self, event):
-        if event.is_pressed:
-            Macro.counter_measures_cycle.run()
+    def cycle_counter_measures(self, event, vjoy):
+        vjoy[1].button(BindedNames.counter_measures_cycle).is_pressed = event.is_pressed

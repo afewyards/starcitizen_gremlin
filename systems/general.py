@@ -21,21 +21,21 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-from config import Macro, ButtonMapping
+from config import ButtonMapping
 from controllers import controllers
 
 
 class GeneralSystem:
 
     def __init__(self):
+        pass
         # controllers.throttle.addButtonEvent(self.abandon_ship, 31)
         # controllers.throttle.addButtonEvent(self.abandon_ship, 32)
-        controllers.throttle.addButtonEvent(self.gimbal_lock, ButtonMapping.throttle_gimbal_lock)
+        # controllers.throttle.addButtonEvent(self.gimbal_lock, ButtonMapping.throttle_gimbal_lock)
 
     # def abandon_ship(self, event, joy):
     #     if event.is_pressed & joy[controllers.throttle.name].button(20).is_pressed & joy[controllers.throttle.name].button(31).is_pressed & joy[controllers.throttle.name].button(32).is_pressed:
     #         Macro.abandon_ship.run()
 
-    def gimbal_lock(self, event, joy):
-        if event.is_pressed:
-            Macro.systems_gimbal_lock_toggle.run()
+    def gimbal_lock(self, event, joy, vjoy):
+        vjoy[1].button(BindedNames.systems_gimbal_lock_toggle).is_pressed = event.is_pressed

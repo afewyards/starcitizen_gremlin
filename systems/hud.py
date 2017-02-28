@@ -22,9 +22,13 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-from config import Macro, ButtonMapping
+from utils import Utils
+from config import ButtonMapping, BindedNames
 from controllers import controllers
+from gremlin.macro import _send_key_down, _send_key_up
 import gremlin
+
+utils = Utils()
 
 class HudMode(object):
     VIEW_MODE_CLEAR = 0
@@ -36,45 +40,70 @@ class HudSystem:
 
     def __init__(self):
         self._hud_headlook_lock = HudMode.VIEW_MODE_CLEAR
+
+        controllers.throttle.addButtonEvent(self.mode_switch, ButtonMapping.throttle_hud_panel_mode)
+        controllers.throttle.addButtonEvent(self.mode_switch, ButtonMapping.throttle_hud_power_mode)
+
         controllers.joystick.addButtonEvent(self.mode_top, ButtonMapping.joystick_hud_up)
         controllers.joystick.addButtonEvent(self.mode_right, ButtonMapping.joystick_hud_right)
         controllers.joystick.addButtonEvent(self.mode_down, ButtonMapping.joystick_hud_down)
         controllers.joystick.addButtonEvent(self.mode_left, ButtonMapping.joystick_hud_left)
         controllers.joystick.addButtonEvent(self.mode_press, ButtonMapping.joystick_hud_press)
+        controllers.joystick.addHatEvent(self.hat_to_buttons, ButtonMapping.joystick_hat)
 
-        controllers.throttle.addButtonEvent(self.mode_switch, 14)
+    def mode_press_fn(self, event, joy, vjoy, shield_key, power_key = 0, hud_key = 0):
+        key = shield_key
+        if joy[controllers.throttle.name].button(ButtonMapping.throttle_hud_power_mode).is_pressed:
+            key = power_key
+        if joy[controllers.throttle.name].button(ButtonMapping.throttle_hud_panel_mode).is_pressed:
+            key = hud_key
 
-    def mode_switch(self, event, joy):
-        if self._hud_headlook_lock is HudMode.VIEW_MODE_CLEAR and event.is_pressed:
-            self._hud_headlook_lock = HudMode.VIEW_MODE_HEADLOOK
-            Macro.hud_headlock_mode.run()
-        elif self._hud_headlook_lock is HudMode.VIEW_MODE_HEADLOOK and event.is_pressed is False:
-            self._hud_headlook_lock = HudMode.VIEW_MODE_CLEAR
-            Macro.hud_headlock_mode_release.run()
+        if key == 0:
+            return
 
-    def mode_press_fn(self, event, joy, hud_macro, power_macro, shield_macro):
-        if event.is_pressed:
-            if joy[controllers.throttle.name].button(24).is_pressed is False:
-                hud_macro.run()
-            else:
-                if joy[controllers.throttle.name].button(13).is_pressed:
-                    power_macro.run()
-                elif self._hud_headlook_lock == HudMode.VIEW_MODE_HEADLOOK:
-                    hud_macro.run()
-                else:
-                    shield_macro.run()
+        if type(key) is tuple:
+            for k in key:
+                vjoy[1].button(k).is_pressed = event.is_pressed
+        else:
+            vjoy[1].button(key).is_pressed = event.is_pressed
 
-    def mode_press(self, event, joy):
-        self.mode_press_fn(event, joy, Macro.hud_panel_confirm, Macro.power_reset, Macro.shield_reset)
 
-    def mode_top(self, event, joy):
-        self.mode_press_fn(event, joy, Macro.hud_panel_up, Macro.power_increase_weapon_shield, Macro.shield_raise_front)
+    def mode_press(self, event, joy, vjoy):
+        self.mode_press_fn(event, joy, vjoy, BindedNames.shield_reset, BindedNames.power_reset)
 
-    def mode_left(self, event, joy):
-        self.mode_press_fn(event, joy, Macro.hud_panel_left, Macro.power_increase_weapon, Macro.shield_raise_left)
+    def mode_top(self, event, joy, vjoy):
+        self.mode_press_fn(event, joy, vjoy, BindedNames.shield_raise_front, (BindedNames.power_increase_weapon,BindedNames.power_increase_shield), BindedNames.hud_up)
 
-    def mode_right(self, event, joy):
-        self.mode_press_fn(event, joy, Macro.hud_panel_right, Macro.power_increase_shield, Macro.shield_raise_right)
+    def mode_left(self, event, joy, vjoy):
+        self.mode_press_fn(event, joy, vjoy, BindedNames.shield_raise_left, BindedNames.power_increase_weapon, BindedNames.hud_left)
 
-    def mode_down(self, event, joy):
-        self.mode_press_fn(event, joy, Macro.hud_panel_down, Macro.power_increase_avionic, Macro.shield_raise_back)
+    def mode_right(self, event, joy, vjoy):
+        self.mode_press_fn(event, joy, vjoy, BindedNames.shield_raise_right, BindedNames.power_increase_shield, BindedNames.hud_right)
+
+    def mode_down(self, event, joy, vjoy):
+        self.mode_press_fn(event, joy, vjoy, BindedNames.shield_raise_back, BindedNames.power_increase_avionic, BindedNames.hud_down)
+
+    def mode_switch(self, event, joy, vjoy):
+        if joy[controllers.throttle.name].button(ButtonMapping.throttle_hud_panel_mode).is_pressed:
+            vjoy[1].button(BindedNames.hud_mode).is_pressed = True
+            utils.tap(vjoy[1].button(BindedNames.hud_down))
+        else:
+            vjoy[1].button(BindedNames.hud_mode).is_pressed = False
+
+    def hat_to_buttons(self, event, joy, vjoy):
+        xas, yas = event.value
+
+        if xas is 0 and yas is 1:
+            # top
+            # utils.tap(vjoy[1].button(BindedNames.zoom_in))
+            pass
+        elif xas is 1 and yas is 0:
+            # right
+            pass
+        elif xas is 0 and yas is -1:
+            # bottom
+            # utils.tap(vjoy[1].button(BindedNames.zoom_out))
+            pass
+        elif xas is -1 and yas is 0:
+            # left
+            pass
